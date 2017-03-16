@@ -48,6 +48,8 @@ byte segmentData = 7;
 volatile unsigned long startTime;
 volatile unsigned long stopTime=0;   
 volatile bool isRunning=false;
+#define timerError 0.001  //Might change with processor and manufacturer. Just do a test... run the timer for an hour with a stop watch next to it, and see !
+//note timerError should be positive for a clock that runs fast and neg. for a clock that runs slow.
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 void setup()
@@ -89,7 +91,7 @@ void stopTimer() {
 
 void loop(){
   if (isRunning){
-    unsigned long seconds=(millis()-startTime)/1000;
+    unsigned long seconds=(millis()-startTime)/1000*(1-timerError);
     unsigned int number=floor(seconds/60)*100+seconds%60;
 
     showNumber(number); //Test pattern

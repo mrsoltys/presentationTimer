@@ -36,13 +36,11 @@
 byte segmentClock = 6;
 byte segmentLatch = 5;
 byte segmentData = 7;
-
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 void setup()
 {
-  Serial.begin(9600);
-
+ // Serial.begin(9600);
   pinMode(segmentClock, OUTPUT);
   pinMode(segmentData, OUTPUT);
   pinMode(segmentLatch, OUTPUT);
@@ -58,10 +56,8 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(3), stopTimer, RISING);
 }
 
-int number = 0;
-
 volatile unsigned long startTime;
-bool isRunning=false;
+volatile bool isRunning=false;
 void startTimer() {
   if(!isRunning){
    startTime=millis();
@@ -69,23 +65,22 @@ void startTimer() {
   }
 }
 
+volatile unsigned long stopTime;   
 void stopTimer() {
   if(isRunning){
    isRunning=false;
+   stopTime=millis()-startTime;
   }
 }
 
 
 void loop(){
   if (isRunning){
-    number=(millis()-startTime)/1000;
-    if ((number%100)>=60){
-      number+=100;
-      number-=60;
-    }
+    unsigned long seconds=(millis()-startTime)/1000;
+    unsigned int number=floor(seconds/60)*100+seconds%60;
 
     showNumber(number); //Test pattern
-    Serial.println(number); //For debugging
+    //Serial.println(number); //For debugging
   }
 }
 

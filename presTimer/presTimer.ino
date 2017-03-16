@@ -1,41 +1,53 @@
 
 /*
- Controlling large 7-segment displays
- By: Nathan Seidle
- SparkFun Electronics
- Date: February 25th, 2015
-
- Adapted for Timer
+Large 7 Seg Timer
  By: Dr. Soltys
  University of Colorado
  Date: 3/6/2017
  License: This code is public domain but you buy me a beer if you use this and we meet someday (Beerware license).
+ 
+Adapted from:
+Controlling large 7-segment displays
+ By: Nathan Seidle
+ SparkFun Electronics
+ Date: February 25th, 2015
 
- Here's how to hook up the Arduino pins to the Large Digit Driver IN
-
- Arduino pin 6 -> CLK (Green on the 6-pin cable)
+Here's how to hook up the Arduino pins to the Large Digit Driver IN
+Arduino 
+ 6 -> CLK (Green on the 6-pin cable)
  5 -> LAT (Blue)
  7 -> SER on the IN side (Yellow)
  5V -> 5V (Orange)
  Power Arduino with 12V and connect to Vin -> 12V (Red)
  GND -> GND (Black)
+ 
+Additional hookups for buttons: one side is hooked up to D2 and D3, 
+with a 10kOhm pullup resistor connected to GND. 
+The other side is connected to 5V:
 
- There are two connectors on the Large Digit Driver. 'IN' is the input side that should be connected to
- your microcontroller (the Arduino). 'OUT' is the output side that should be connected to the 'IN' of addtional
- digits.
-
- Each display will use about 150mA with all segments and decimal point on.
-
- For buttons: one side is hooked up to D2 and D3, with a 10kOhm pullup resistor connected to GND. 
- The other side is connected to 5V
-
-*/
+ 2----10 kOhm - GND
+    |
+    Start button -- 5V
+ 3----10 kOhm - GND
+    |
+    Stop button -- 5V
+ 4----10 kOhm - GND
+    |
+    Clear button -- 5V              
+ */
 
 //GPIO declarations
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 byte segmentClock = 6;
 byte segmentLatch = 5;
 byte segmentData = 7;
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+//Timer Variables
+//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+volatile unsigned long startTime;
+volatile unsigned long stopTime=0;   
+volatile bool isRunning=false;
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 void setup()
@@ -57,9 +69,7 @@ void setup()
   pinMode(4,INPUT);
 }
 
-volatile unsigned long startTime;
-volatile unsigned long stopTime=0;   
-volatile bool isRunning=false;
+
 
 void startTimer() {
   if(!isRunning){

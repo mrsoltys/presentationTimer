@@ -2787,6 +2787,10 @@ Mating wall wart : TOL-00298 (and others)</description>
 <pinref part="J2" gate="G$1" pin="GND"/>
 <wire x1="106.68" y1="78.74" x2="88.9" y2="66.04" width="0.1524" layer="91"/>
 <junction x="88.9" y="66.04"/>
+<wire x1="106.68" y1="78.74" x2="106.68" y2="63.5" width="0.1524" layer="91"/>
+<junction x="106.68" y="78.74"/>
+<wire x1="106.68" y1="63.5" x2="88.9" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="88.9" y1="63.5" x2="88.9" y2="66.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$2" class="0">

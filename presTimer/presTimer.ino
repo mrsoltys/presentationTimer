@@ -54,18 +54,21 @@ void setup()
   attachInterrupt(digitalPinToInterrupt(2), startTimer, RISING);
   pinMode(3,INPUT);
   attachInterrupt(digitalPinToInterrupt(3), stopTimer, RISING);
+  pinMode(4,INPUT);
 }
 
 volatile unsigned long startTime;
+volatile unsigned long stopTime=0;   
 volatile bool isRunning=false;
+
 void startTimer() {
   if(!isRunning){
-   startTime=millis();
+   startTime=millis()-stopTime;
    isRunning=true;
   }
 }
 
-volatile unsigned long stopTime;   
+
 void stopTimer() {
   if(isRunning){
    isRunning=false;
@@ -82,6 +85,10 @@ void loop(){
     showNumber(number); //Test pattern
     //Serial.println(number); //For debugging
   }
+  else if (digitalRead(4)==HIGH){
+    stopTime=0;
+    showNumber(0);
+    }
 }
 
 //Takes a number and displays 2 numbers. Displays absolute value (no negatives)

@@ -1,6 +1,5 @@
 
-/*
-  Large 7 Seg Timer
+/*Large 7 Seg Timer
   By: Dr. Soltys
   University of Colorado
   Date: 3/6/2017
@@ -48,6 +47,7 @@ byte segmentData = 7;
 volatile unsigned long startTime;
 volatile unsigned long stopTime = 0;
 volatile bool isRunning = false;
+volatile unsigned long timerError=0;
 // This might change w/ board time and manufacturer, but this corrects for that error.
 // Use a negative value if timer runs slow.
 //  6 seconds / 4800 seconds = 0.00125
@@ -115,7 +115,7 @@ void loop() {
   if (isRunning) {
     unsigned long seconds = (millis() - startTime) / 1000 * (1 - timerError);
     unsigned int number = floor(seconds / 60) * 100 + seconds % 60;
-    showNumber(number);
+    showNumber(number*10);
     //Serial.println(number); //For debugging
   }
   else if (digitalRead(4) == HIGH) {
@@ -130,7 +130,7 @@ void showNumber(float value){
   for (byte x = 0 ; x < 4 ; x++){
     int remainder = number % 10;
 
-    if (x == 2) postNumber(remainder, true);  //Decimil after 2nd digit
+    if (x == 3) postNumber(remainder, true);  //Decimil after 2nd digit
     else        postNumber(remainder, false);
 
     number /= 10;

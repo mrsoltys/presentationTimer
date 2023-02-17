@@ -1,16 +1,15 @@
-
 /*Large 7 Seg Timer
   By: Dr. Soltys
   University of Colorado
   Date: 3/6/2017
-  License: This code is public domain but you buy me a beer if you use this and we meet someday (Beerware license).
+  Updated 2/16/2022 by Jordi Brownlow
 
+  License: This code is public domain but you buy me a beer if you use this and we meet someday (Beerware license).
   Adapted from:
   Controlling large 7-segment displays
   By: Nathan Seidle
   SparkFun Electronics
   Date: February 25th, 2015
-
   Here's how to hook up the Arduino pins to the Large Digit Driver IN
   Arduino
   6 -> CLK (Green on the 6-pin cable)
@@ -19,11 +18,9 @@
   5V -> 5V (Orange)
   Power Arduino with 12V and connect to Vin -> 12V (Red)
   GND -> GND (Black)
-
   Additional hookups for buttons: one side is hooked up to D2 and D3,
   with a 10kOhm pullup resistor connected to GND.
   The other side is connected to 5V:
-
   2----10 kOhm - GND
     |
     Start button -- 5V
@@ -53,8 +50,7 @@ volatile unsigned long timerError=0;
 //  6 seconds / 4800 seconds = 0.00125
 //-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-void setup()
-{
+void setup() {
   // Serial.begin(9600);
   pinMode(segmentClock, OUTPUT);
   pinMode(segmentData, OUTPUT);
@@ -115,7 +111,7 @@ void loop() {
   if (isRunning) {
     unsigned long seconds = (millis() - startTime) / 1000 * (1 - timerError);
     unsigned int number = floor(seconds / 60) * 100 + seconds % 60;
-    showNumber(number*10);
+    showNumber(number); ///////////////////////
     //Serial.println(number); //For debugging
   }
   else if (digitalRead(4) == HIGH) {
@@ -127,10 +123,10 @@ void loop() {
 void showNumber(float value){
   int number = abs(value); //Remove negative signs and any decimals
 
-  for (byte x = 0 ; x < 4 ; x++){
+  for (byte x = 0 ; x < 4 ; x++){ 
     int remainder = number % 10;
 
-    if (x == 3) postNumber(remainder, true);  //Decimil after 2nd digit
+    if (x == 2) postNumber(remainder, true);  //Decimil after 2nd digit
     else        postNumber(remainder, false);
 
     number /= 10;
